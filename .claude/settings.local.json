@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Test-Path \"c:\\\\Users\\\\Alejandro\\\\Dev\\\\ghost-ai\\\\components\\\\ui\\\\\" -PathType Container)",
+      "Bash(Get-ChildItem \"c:\\\\Users\\\\Alejandro\\\\Dev\\\\ghost-ai\\\\components\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(grep -E \"\\\\.json$\")",
+      "Bash(bunx shadcn@4.5.0 init --yes --defaults)",
+      "Bash(bunx shadcn@4.5.0 add card dialog input tabs textarea scroll-area --yes)",
+      "Bash(bun add *)",
+      "Bash(bun run *)"
+    ]
+  }
+}
