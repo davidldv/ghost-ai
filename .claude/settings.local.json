@@ -12,7 +12,13 @@
       "Bash(bun tsc *)",
       "Bash(bunx prisma *)",
       "Bash(bunx auth *)",
-      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(32\\).toString\\('base64'\\)\\)\")"
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(32\\).toString\\('base64'\\)\\)\")",
+      "Bash(npm run *)",
+      "Bash(npx prisma *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\Alejandro\\\\Dev\\\\ghost-ai\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(npm view *)",
+      "Bash(bun install *)"
     ]
   }
 }

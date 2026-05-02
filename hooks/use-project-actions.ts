@@ -1,18 +1,24 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter, usePathname } from "next/navigation"
+import { useCallback, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 
 export interface ProjectRow {
   id: string
   name: string
+  owned: boolean
 }
 
 export type DialogType = "create" | "rename" | "delete" | null
 
+interface UseProjectActionsOptions {
+  activeProjectId?: string
+}
+
 function toSlug(name: string): string {
   return name
     .toLowerCase()
+    .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
 }
@@ -21,96 +27,122 @@ function shortSuffix(): string {
   return Math.random().toString(36).slice(2, 6)
 }
 
-export function useProjectActions() {
+export function useProjectActions(options: UseProjectActionsOptions = {}) {
+  const { activeProjectId } = options
   const router = useRouter()
-  const pathname = usePathname()
 
   const [dialogType, setDialogType] = useState<DialogType>(null)
   const [activeProject, setActiveProject] = useState<ProjectRow | null>(null)
   const [name, setName] = useState("")
-  const [roomId, setRoomId] = useState("")
   const [suffix, setSuffix] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const openCreate = () => {
-    const s = shortSuffix()
-    setSuffix(s)
+  const slugPreview = useMemo(() => {
+    const s = toSlug(name)
+    return s && suffix ? `${s}-${suffix}` : ""
+  }, [name, suffix])
+
+  const openCreate = useCallback(() => {
+    setSuffix(shortSuffix())
     setName("")
-    setRoomId("")
     setActiveProject(null)
+    setError(null)
     setDialogType("create")
-  }
+  }, [])
 
-  const openRename = (project: ProjectRow) => {
+  const openRename = useCallback((project: ProjectRow) => {
     setName(project.name)
-    setRoomId("")
     setActiveProject(project)
+    setError(null)
     setDialogType("rename")
-  }
+  }, [])
 
-  const openDelete = (project: ProjectRow) => {
+  const openDelete = useCallback((project: ProjectRow) => {
     setActiveProject(project)
+    setError(null)
     setDialogType("delete")
-  }
+  }, [])
 
-  const close = () => {
+  const close = useCallback(() => {
+    if (loading) return
     setDialogType(null)
     setActiveProject(null)
     setName("")
-    setRoomId("")
-  }
+    setError(null)
+  }, [loading])
 
-  const handleNameChange = (value: string) => {
+  const handleNameChange = useCallback((value: string) => {
     setName(value)
-    const s = toSlug(value)
-    setRoomId(s ? `${s}-${suffix}` : "")
-  }
+  }, [])
 
-  const submit = async () => {
-    if (!name.trim() && dialogType !== "delete") return
+  const submit = useCallback(async () => {
+    if (dialogType === null) return
+    if (dialogType !== "delete" && !name.trim()) return
+
     setLoading(true)
-
+    setError(null)
     try {
       if (dialogType === "create") {
-        const finalRoomId = roomId || `${toSlug(name.trim())}-${suffix}`
+        const trimmed = name.trim()
+        const id = slugPreview || `${toSlug(trimmed) || "project"}-${suffix || shortSuffix()}`
         const res = await fetch("/api/projects", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name.trim(), id: finalRoomId }),
+          body: JSON.stringify({ id, name: trimmed }),
         })
-        if (res.ok) {
-          const { project } = (await res.json()) as { project: { id: string } }
-          router.push(`/editor/${project.id}`)
-        }
-      } else if (dialogType === "rename" && activeProject) {
-        await fetch(`/api/projects/${activeProject.id}`, {
+        if (!res.ok) throw new Error(`Create failed (${res.status})`)
+        const data = (await res.json()) as { project: { id: string } }
+        setDialogType(null)
+        setActiveProject(null)
+        setName("")
+        router.push(`/editor/${data.project.id}`)
+        router.refresh()
+        return
+      }
+
+      if (dialogType === "rename" && activeProject) {
+        const res = await fetch(`/api/projects/${activeProject.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: name.trim() }),
         })
-        close()
+        if (!res.ok) throw new Error(`Rename failed (${res.status})`)
+        setDialogType(null)
+        setActiveProject(null)
+        setName("")
         router.refresh()
-      } else if (dialogType === "delete" && activeProject) {
-        await fetch(`/api/projects/${activeProject.id}`, { method: "DELETE" })
-        const isActive = pathname === `/editor/${activeProject.id}`
-        close()
-        if (isActive) {
+        return
+      }
+
+      if (dialogType === "delete" && activeProject) {
+        const targetId = activeProject.id
+        const res = await fetch(`/api/projects/${targetId}`, { method: "DELETE" })
+        if (!res.ok) throw new Error(`Delete failed (${res.status})`)
+        setDialogType(null)
+        setActiveProject(null)
+        setName("")
+        if (activeProjectId === targetId) {
           router.push("/editor")
         } else {
           router.refresh()
         }
+        return
       }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Request failed")
     } finally {
       setLoading(false)
     }
-  }
+  }, [dialogType, name, slugPreview, suffix, activeProject, activeProjectId, router])
 
   return {
     dialogType,
     activeProject,
     name,
-    roomId,
+    slugPreview,
     loading,
+    error,
     openCreate,
     openRename,
     openDelete,
