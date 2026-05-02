@@ -8,7 +8,11 @@
       "Bash(bunx shadcn@4.5.0 init --yes --defaults)",
       "Bash(bunx shadcn@4.5.0 add card dialog input tabs textarea scroll-area --yes)",
       "Bash(bun add *)",
-      "Bash(bun run *)"
+      "Bash(bun run *)",
+      "Bash(bun tsc *)",
+      "Bash(bunx prisma *)",
+      "Bash(bunx auth *)",
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(32\\).toString\\('base64'\\)\\)\")"
     ]
   }
 }
