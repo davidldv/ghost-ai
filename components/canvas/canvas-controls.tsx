@@ -17,15 +17,15 @@ export const CanvasControls = memo(function CanvasControls({
   onRedo,
 }: CanvasControlsProps) {
   const zoomIn = useCallback(() => {
-    document.dispatchEvent(new CustomEvent("canvas-zoom-in"))
+    window.dispatchEvent(new CustomEvent("canvas-zoom-in"))
   }, [])
 
   const zoomOut = useCallback(() => {
-    document.dispatchEvent(new CustomEvent("canvas-zoom-out"))
+    window.dispatchEvent(new CustomEvent("canvas-zoom-out"))
   }, [])
 
   const fitView = useCallback(() => {
-    document.dispatchEvent(new CustomEvent("canvas-fit-view"))
+    window.dispatchEvent(new CustomEvent("canvas-fit-view"))
   }, [])
 
   return (

@@ -52,8 +52,13 @@ const edgeTypes: EdgeTypes = {
 const defaultEdgeOptions = {
   type: CANVAS_EDGE_TYPE,
   data: { label: undefined },
-  style: { stroke: DEFAULT_EDGE_COLOR, strokeWidth: 1.25 },
-  markerEnd: { type: MarkerType.ArrowClosed, color: DEFAULT_EDGE_COLOR, width: 14, height: 14 },
+  style: { stroke: DEFAULT_EDGE_COLOR, strokeWidth: 1.5 },
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: DEFAULT_EDGE_COLOR,
+    width: 18,
+    height: 18,
+  },
 }
 
 let nodeCounter = 0

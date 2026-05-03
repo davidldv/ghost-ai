@@ -11,8 +11,8 @@ import {
 } from "@xyflow/react"
 import { CanvasEdgeData, CANVAS_EDGE_TYPE } from "@/types/canvas"
 
-const EDGE_COLOR = "#52525b"
-const EDGE_HOVER_COLOR = "#a1a1aa"
+const EDGE_COLOR = "#5b5b66"
+const EDGE_HOVER_COLOR = "#cbd5e1"
 
 interface CanvasEdgeProps {
   id: string
@@ -24,6 +24,7 @@ interface CanvasEdgeProps {
   targetY: number
   sourcePosition?: Position
   targetPosition?: Position
+  markerEnd?: string
 }
 
 export const CanvasEdge = memo(function CanvasEdge({
@@ -36,9 +37,11 @@ export const CanvasEdge = memo(function CanvasEdge({
   targetY,
   sourcePosition,
   targetPosition,
+  markerEnd,
 }: CanvasEdgeProps) {
   const { updateEdgeData, deleteElements } = useReactFlow()
   const [editing, setEditing] = useState(false)
+  const [hovered, setHovered] = useState(false)
   const [draft, setDraft] = useState(data?.label ?? "")
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -60,14 +63,7 @@ export const CanvasEdge = memo(function CanvasEdge({
   })
 
   const commit = useCallback(() => {
-    const edge: Edge<CanvasEdgeData, typeof CANVAS_EDGE_TYPE> = {
-      id,
-      source: "",
-      target: "",
-      type: CANVAS_EDGE_TYPE,
-      data: { label: draft },
-    }
-    updateEdgeData(id, edge)
+    updateEdgeData(id, { label: draft })
     setEditing(false)
   }, [id, draft, updateEdgeData])
 
@@ -98,7 +94,7 @@ export const CanvasEdge = memo(function CanvasEdge({
     deleteElements({ edges: [{ id }] })
   }, [id, deleteElements])
 
-  const isActive = selected || editing
+  const isActive = selected || editing || hovered
 
   return (
     <>
@@ -107,11 +103,13 @@ export const CanvasEdge = memo(function CanvasEdge({
         className="react-flow__edge-path"
         d={path}
         stroke={isActive ? EDGE_HOVER_COLOR : EDGE_COLOR}
-        strokeWidth={1.5}
+        strokeWidth={isActive ? 2 : 1.5}
         fill="none"
+        markerEnd={markerEnd}
         style={{
           pointerEvents: "stroke",
           cursor: "pointer",
+          transition: "stroke 120ms ease, stroke-width 120ms ease",
         }}
       />
       <path
@@ -123,6 +121,8 @@ export const CanvasEdge = memo(function CanvasEdge({
           pointerEvents: "stroke",
           cursor: "pointer",
         }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       />
       <EdgeLabelRenderer>
         <div
@@ -155,22 +155,24 @@ export const CanvasEdge = memo(function CanvasEdge({
               onChange={(e) => setDraft(e.target.value)}
               onBlur={commit}
               onKeyDown={onKeyDown}
-              className="max-w-[120px] rounded-md border border-border-default bg-bg-elevated px-2 py-1 text-xs text-text-primary outline-none"
+              className="max-w-30 rounded-md border border-border-default bg-bg-elevated px-2 py-1 text-xs text-text-primary outline-none"
               style={{ width: Math.max(60, draft.length * 8 + 24) }}
               onClick={(e) => e.stopPropagation()}
               onMouseDown={(e) => e.stopPropagation()}
             />
-          ) : (
-            <div
-              className={
-                data?.label
-                  ? "cursor-pointer rounded-md border border-border-subtle bg-bg-elevated px-2 py-1 text-xs text-text-primary shadow-sm"
-                  : "cursor-pointer rounded-md border border-border-subtle bg-bg-subtle px-2 py-1 text-xs italic text-text-muted opacity-60"
-              }
-            >
-              {data?.label || "double-click to label"}
+          ) : data?.label ? (
+            <div className="cursor-pointer rounded-md border border-border-subtle bg-bg-elevated px-2 py-1 text-xs font-medium text-text-primary shadow-sm">
+              {data.label}
             </div>
-          )}
+          ) : (hovered || selected) ? (
+            <div
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              className="cursor-pointer rounded-md border border-border-subtle/70 bg-bg-elevated/80 px-2 py-0.5 text-[10px] italic text-text-muted opacity-80 shadow-sm"
+            >
+              + label
+            </div>
+          ) : null}
         </div>
       </EdgeLabelRenderer>
     </>

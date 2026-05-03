@@ -7,6 +7,7 @@ import {
   Handle,
   Position,
   useReactFlow,
+  useStore,
 } from "@xyflow/react"
 import {
   CanvasNode as CanvasNodeType,
@@ -25,6 +26,10 @@ const HANDLE_POSITIONS: { id: string; type: "source" | "target"; position: Posit
 
 function CanvasNodeImpl({ id, data, selected, width, height }: NodeProps<CanvasNodeType>) {
   const { updateNodeData, deleteElements } = useReactFlow()
+  const selectedCount = useStore(
+    (s) => Array.from(s.nodeLookup.values()).filter((n) => n.selected).length
+  )
+  const isSoleSelection = !!selected && selectedCount === 1
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(data.label)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
@@ -88,11 +93,11 @@ function CanvasNodeImpl({ id, data, selected, width, height }: NodeProps<CanvasN
         startEdit()
       }}
     >
-      {selected && (
+      {isSoleSelection && (
         <NodeColorToolbar currentColor={data.color} onColorChange={handleColorChange} onDelete={handleDelete} />
       )}
       <NodeResizer
-        isVisible={selected}
+        isVisible={isSoleSelection}
         minWidth={NODE_MIN_WIDTH}
         minHeight={NODE_MIN_HEIGHT}
         lineClassName="!border-accent-primary/60"

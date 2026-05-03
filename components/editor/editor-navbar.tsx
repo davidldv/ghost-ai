@@ -65,7 +65,7 @@ export function EditorNavbar({
         <div className="flex items-center gap-3">
           <button
             onClick={onSidebarToggle}
-            className="group flex h-10 w-10 items-center justify-center rounded-2xl border border-border-default/80 bg-bg-elevated/70 text-text-muted shadow-sm shadow-black/20 transition-all hover:border-border-subtle hover:bg-bg-elevated hover:text-text-primary hover:shadow-md"
+            className="group flex h-10 w-10 items-center justify-center rounded-2xl border border-border-default/80 bg-bg-elevated/70 text-text-muted shadow-sm shadow-black/20 transition-all hover:border-border-subtle hover:bg-bg-elevated hover:text-text-primary hover:shadow-md cursor-pointer"
             aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
             {isSidebarOpen ? (
@@ -173,7 +173,7 @@ export function EditorNavbar({
           {onAiToggle && (
             <button
               onClick={onAiToggle}
-              className={`flex h-10 w-10 items-center justify-center rounded-2xl border shadow-sm shadow-black/10 transition-all ${
+              className={`flex h-10 w-10 items-center justify-center rounded-2xl border shadow-sm shadow-black/10 transition-all cursor-pointer ${
                 isAiOpen
                   ? "border-accent-ai/40 bg-accent-ai/12 text-accent-ai"
                   : "border-border-default/70 bg-bg-elevated/70 text-text-muted hover:border-border-subtle hover:bg-bg-elevated hover:text-text-primary"

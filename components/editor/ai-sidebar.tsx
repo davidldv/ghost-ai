@@ -9,6 +9,10 @@ import {
   Download,
   Sparkles,
   Loader2,
+  ShoppingBag,
+  MessagesSquare,
+  GitBranch,
+  ArrowUpRight,
 } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { Button } from "@/components/ui/button"
@@ -37,10 +41,42 @@ import {
   type AIStatusMessage,
 } from "@/types/tasks"
 
-const STARTER_CHIPS = [
-  "Design an e-commerce backend",
-  "Create a chat app architecture",
-  "Build a CI/CD pipeline",
+const STARTER_CHIPS: {
+  prompt: string
+  title: string
+  subtitle: string
+  icon: typeof ShoppingBag
+  accent: string
+  ring: string
+  glow: string
+}[] = [
+  {
+    prompt: "Design an e-commerce backend",
+    title: "E-commerce backend",
+    subtitle: "Cart, checkout, orders",
+    icon: ShoppingBag,
+    accent: "text-emerald-300",
+    ring: "from-emerald-500/30 via-emerald-500/10 to-transparent",
+    glow: "shadow-emerald-500/10",
+  },
+  {
+    prompt: "Create a chat app architecture",
+    title: "Realtime chat app",
+    subtitle: "Sockets, presence, fanout",
+    icon: MessagesSquare,
+    accent: "text-sky-300",
+    ring: "from-sky-500/30 via-sky-500/10 to-transparent",
+    glow: "shadow-sky-500/10",
+  },
+  {
+    prompt: "Build a CI/CD pipeline",
+    title: "CI/CD pipeline",
+    subtitle: "Build, test, deploy",
+    icon: GitBranch,
+    accent: "text-fuchsia-300",
+    ring: "from-fuchsia-500/30 via-fuchsia-500/10 to-transparent",
+    glow: "shadow-fuchsia-500/10",
+  },
 ]
 
 interface AISidebarProps {
@@ -423,16 +459,37 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
                     <p className="mb-4 text-sm text-text-muted">
                       Describe your system and Ghost AI will help architect it
                     </p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {STARTER_CHIPS.map((chip) => (
-                        <button
-                          key={chip}
-                          onClick={() => setInput(chip)}
-                          className="cursor-pointer rounded-full bg-bg-subtle px-3 py-1.5 text-xs text-accent-primary transition-colors hover:bg-accent-primary-dim"
-                        >
-                          {chip}
-                        </button>
-                      ))}
+                    <div className="mt-2 flex w-full flex-col gap-2 px-1">
+                      {STARTER_CHIPS.map((chip) => {
+                        const Icon = chip.icon
+                        return (
+                          <button
+                            key={chip.prompt}
+                            onClick={() => setInput(chip.prompt)}
+                            className={`group relative flex w-full cursor-pointer items-center gap-3 overflow-hidden rounded-2xl border border-border-default/70 bg-bg-elevated/60 p-3 text-left shadow-sm ${chip.glow} transition-all hover:border-border-subtle hover:bg-bg-elevated hover:shadow-md`}
+                          >
+                            <div
+                              className={`pointer-events-none absolute inset-0 -z-0 bg-gradient-to-br ${chip.ring} opacity-0 transition-opacity duration-200 group-hover:opacity-100`}
+                            />
+                            <div
+                              className={`relative z-10 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border-default/60 bg-bg-subtle/70 ${chip.accent}`}
+                            >
+                              <Icon className="h-4 w-4" />
+                            </div>
+                            <div className="relative z-10 flex min-w-0 flex-1 flex-col">
+                              <span className="text-sm font-medium tracking-tight text-text-primary">
+                                {chip.title}
+                              </span>
+                              <span className="text-[11px] text-text-muted">
+                                {chip.subtitle}
+                              </span>
+                            </div>
+                            <ArrowUpRight
+                              className={`relative z-10 h-4 w-4 shrink-0 ${chip.accent} opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100`}
+                            />
+                          </button>
+                        )
+                      })}
                     </div>
                   </div>
                 ) : (
