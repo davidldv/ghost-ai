@@ -4,7 +4,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Current Phase
 
-Feature 29 — spec UI integration
+Feature 31 — core UI modernization pass
 
 ## Current Goal
 

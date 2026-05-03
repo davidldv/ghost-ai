@@ -67,7 +67,7 @@ export const PresenceAvatars = memo(function PresenceAvatars() {
   if (others.length === 0) return null
 
   return (
-    <div className="absolute right-4 top-4 z-20 flex items-center">
+    <div className="absolute right-4 top-4 z-20 flex items-center rounded-2xl border border-border-default/70 bg-bg-surface/85 px-2 py-1.5 shadow-lg backdrop-blur">
       <div className="flex items-center">
         {otherUsers.map((user, idx) => (
           <PresenceAvatar

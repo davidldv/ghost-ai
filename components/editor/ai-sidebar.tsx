@@ -367,8 +367,9 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
 
   return (
     <>
-      <aside className="fixed inset-y-3 right-3 top-[3.75rem] z-50 flex w-96 flex-col rounded-2xl border border-border-subtle bg-bg-surface/95 backdrop-blur-xl shadow-xl">
-        <div className="flex h-14 shrink-0 items-center justify-between border-b border-border-default px-4">
+      <aside className="fixed inset-y-3 right-3 top-[4.25rem] z-50 flex w-[25rem] flex-col overflow-hidden rounded-3xl border border-border-default/80 bg-bg-surface/92 shadow-2xl backdrop-blur-xl">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-accent-ai/12 to-transparent" />
+        <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-border-default/80 px-4">
           <div className="flex items-center gap-3">
             <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-accent-primary-dim">
               <Bot className="h-4 w-4 text-accent-primary" />
@@ -387,24 +388,24 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
               </p>
             </div>
           </div>
-        <Button variant="ghost" size="icon-sm" onClick={onClose} className="cursor-pointer">
+          <Button variant="ghost" size="icon-sm" onClick={onClose} className="cursor-pointer">
             <X className="h-4 w-4" />
             <span className="sr-only">Close AI sidebar</span>
           </Button>
         </div>
 
         <Tabs defaultValue="architect" className="flex flex-1 flex-col overflow-hidden">
-          <TabsList className="mx-4 mt-2 h-10 gap-1 rounded-lg bg-bg-subtle p-1">
+          <TabsList className="mx-4 mt-3 h-10 gap-1 rounded-xl border border-border-default/70 bg-bg-elevated/60 p-1">
             <TabsTrigger
               value="architect"
-              className="flex-1 cursor-pointer text-xs data-[state=active]:bg-accent-primary data-[state=active]:text-bg-base"
+              className="h-full flex-1 cursor-pointer rounded-lg text-xs data-active:border-border-subtle data-active:bg-bg-subtle data-active:text-text-primary"
             >
               <Sparkles className="mr-1.5 h-3 w-3" />
               AI Architect
             </TabsTrigger>
             <TabsTrigger
               value="specs"
-              className="flex-1 cursor-pointer text-xs data-[state=active]:bg-accent-primary data-[state=active]:text-bg-base"
+              className="h-full flex-1 cursor-pointer rounded-lg text-xs data-active:border-border-subtle data-active:bg-bg-subtle data-active:text-text-primary"
             >
               <FileText className="mr-1.5 h-3 w-3" />
               Specs
@@ -449,15 +450,14 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
                             <span>{formatTime(msg.timestamp)}</span>
                           </div>
                           <div
-                            className={`max-w-[85%] rounded-xl px-3 py-2 text-sm ${
-                              isUser
-                                ? "bg-accent-primary text-bg-base"
-                                : "bg-bg-elevated border border-border-default text-text-primary"
-                            }`}
-                            style={isUser ? { backgroundColor: "#62C073", color: "#0a0a0a" } : undefined}
-                          >
-                            {msg.content}
-                          </div>
+                             className={`max-w-[85%] rounded-2xl border px-3 py-2 text-sm ${
+                               isUser
+                                 ? "border-state-success/30 bg-state-success/85 text-bg-base"
+                                 : "border-border-default bg-bg-elevated text-text-primary"
+                             }`}
+                           >
+                             {msg.content}
+                           </div>
                         </div>
                       )
                     })}
@@ -475,13 +475,10 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
             </ScrollArea>
 
             {showStatusStrip && (
-              <div className="mx-3 mb-2 flex items-center gap-2 rounded-lg border border-accent-primary/40 bg-bg-elevated px-3 py-1.5 text-xs text-text-primary">
-                <Loader2 className="h-3 w-3 animate-spin" style={{ color: "#62C073" }} />
+              <div className="mx-3 mb-2 flex items-center gap-2 rounded-xl border border-state-success/30 bg-bg-elevated px-3 py-1.5 text-xs text-text-primary">
+                <Loader2 className="h-3 w-3 animate-spin text-state-success" />
                 <span className="truncate">{aiStatusFeed?.text || "Run active"}</span>
-                <span
-                  className="ml-auto h-1.5 w-1.5 animate-pulse rounded-full"
-                  style={{ backgroundColor: "#62C073" }}
-                />
+                <span className="ml-auto h-1.5 w-1.5 animate-pulse rounded-full bg-state-success" />
               </div>
             )}
 
@@ -493,7 +490,7 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
 
             <div className="border-t border-border-default p-3">
               <div
-                className={`relative flex min-h-[72px] max-h-[160px] items-end rounded-xl border bg-bg-elevated ${
+                className={`relative flex min-h-[72px] max-h-[160px] items-end rounded-xl border bg-bg-surface ${
                   isAiActive ? "border-border-default opacity-70" : "border-border-default"
                 }`}
               >
@@ -504,16 +501,12 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
                   onKeyDown={handleKeyDown}
                   placeholder="Describe what you want to build..."
                   disabled={isAiActive}
-                  className="flex-1 resize-none border-0 bg-transparent px-3 py-3 text-sm text-text-primary placeholder:text-text-muted focus-visible:ring-0 disabled:opacity-50"
+                  className="flex-1 resize-none border-0 bg-transparent px-3 py-3 text-sm text-text-primary placeholder:text-text-muted focus-visible:ring-0 disabled:opacity-50 dark:bg-transparent"
                   style={{ minHeight: "72px", maxHeight: "160px" }}
                 />
                 <Button
                   size="icon-sm"
-                  className="m-2 h-8 w-8 rounded-lg text-bg-base"
-                  style={{
-                    backgroundColor: !input.trim() || isAiActive ? "#2a2a30" : "#62C073",
-                    color: !input.trim() || isAiActive ? undefined : "#0a0a0a",
-                  }}
+                  className="m-2 h-8 w-8 shrink-0 rounded-lg border border-transparent bg-bg-subtle text-text-muted enabled:bg-state-success enabled:text-bg-base"
                   onClick={handleSend}
                   disabled={!input.trim() || isAiActive}
                 >
@@ -527,8 +520,7 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
             <Button
               onClick={handleGenerateSpec}
               disabled={generatingSpec}
-              className="mb-3 h-10 w-full bg-accent-primary text-white hover:bg-accent-primary/90"
-              style={{ backgroundColor: "#62C073", color: "#0a0a0a" }}
+              className="mb-3 h-10 w-full bg-state-success text-bg-base shadow-lg shadow-state-success/20 hover:opacity-90"
             >
               {generatingSpec ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -566,7 +558,7 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
                     {specs.map((spec) => (
                       <li
                         key={spec.id}
-                        className="group flex items-center gap-2 rounded-lg border border-border-default bg-bg-elevated px-3 py-2 transition-colors hover:border-accent-primary/40"
+                        className="group flex items-center gap-2 rounded-xl border border-border-default bg-bg-elevated px-3 py-2 transition-colors hover:border-accent-primary/40"
                       >
                         <button
                           onClick={() => handleOpenPreview(spec)}
@@ -607,7 +599,7 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
           if (!open) handleClosePreview()
         }}
       >
-        <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl border-border-default/80 bg-bg-surface/95">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-accent-primary" />
@@ -642,7 +634,7 @@ export function AISidebar({ open, onClose, projectId, roomId }: AISidebarProps) 
               <Button
                 size="sm"
                 onClick={() => handleDownload(previewSpec)}
-                style={{ backgroundColor: "#62C073", color: "#0a0a0a" }}
+                className="bg-state-success text-bg-base shadow-md shadow-state-success/20 hover:opacity-90"
               >
                 <Download className="mr-2 h-3.5 w-3.5" />
                 Download

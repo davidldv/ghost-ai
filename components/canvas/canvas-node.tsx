@@ -134,9 +134,9 @@ function CanvasNodeImpl({ id, data, selected, width, height }: NodeProps<CanvasN
             style={{ color: text }}
           />
         ) : (
-          <span className="pointer-events-none w-full select-none break-words text-center text-sm leading-tight">
+          <span className="pointer-events-none w-full select-none break-words text-center text-sm font-semibold leading-tight tracking-tight">
             {data.label || (
-              <span className="opacity-40 italic">Double-click to edit</span>
+              <span className="font-normal opacity-40 italic">Double-click to edit</span>
             )}
           </span>
         )}
@@ -153,16 +153,19 @@ interface ShapeBackgroundProps {
 }
 
 function ShapeBackground({ shape, fill, text, selected }: ShapeBackgroundProps) {
-  const borderColor = selected ? text : "#2a2a30"
+  const borderColor = selected ? text : `${text}33`
   const borderWidth = selected ? 1.5 : 1
+  const glow = `0 0 0 1px ${text}14, 0 8px 24px -8px ${text}40, 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 ${text}1A`
+  const gradient = `linear-gradient(180deg, ${text}10 0%, transparent 40%), ${fill}`
 
   if (shape === "rectangle") {
     return (
       <div
         className="absolute inset-0 rounded-xl"
         style={{
-          background: fill,
+          background: gradient,
           border: `${borderWidth}px solid ${borderColor}`,
+          boxShadow: glow,
         }}
       />
     )
@@ -173,8 +176,9 @@ function ShapeBackground({ shape, fill, text, selected }: ShapeBackgroundProps) 
       <div
         className="absolute inset-0 rounded-full"
         style={{
-          background: fill,
+          background: gradient,
           border: `${borderWidth}px solid ${borderColor}`,
+          boxShadow: glow,
         }}
       />
     )
@@ -185,8 +189,9 @@ function ShapeBackground({ shape, fill, text, selected }: ShapeBackgroundProps) 
       <div
         className="absolute inset-0 rounded-full"
         style={{
-          background: fill,
+          background: gradient,
           border: `${borderWidth}px solid ${borderColor}`,
+          boxShadow: glow,
         }}
       />
     )

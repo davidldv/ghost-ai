@@ -104,17 +104,20 @@ export function ShareDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-130 border-border-default/80 bg-bg-surface/95 shadow-2xl shadow-black/50">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-linear-to-b from-brand/10 to-transparent" />
         <DialogHeader>
-          <DialogTitle>Share project</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-xl font-semibold tracking-tight text-copy-primary">
+            Share project
+          </DialogTitle>
+          <DialogDescription className="text-sm text-copy-muted">
             {isOwner
               ? "Invite people by email or copy the project link."
               : "People with access to this project."}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4 mt-2">
+        <div className="mt-2 flex flex-col gap-4">
           {isOwner && (
             <form className="flex gap-2" onSubmit={handleInvite}>
               <Input
@@ -122,14 +125,14 @@ export function ShareDialog({
                 placeholder="colleague@example.com"
                 value={inviteEmail}
                 onChange={(e) => setInviteEmail(e.target.value)}
-                className="flex-1 h-10 bg-bg-base border border-border-default rounded-xl px-3 text-sm text-text-primary placeholder:text-text-faint focus-visible:border-accent-primary focus-visible:ring-1 focus-visible:ring-accent-primary"
+                className="h-11 flex-1 rounded-xl border border-border-default bg-base px-4 text-sm text-copy-primary placeholder:text-faint focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand"
                 disabled={inviting}
               />
               <Button
                 type="submit"
                 size="sm"
                 disabled={!inviteEmail.trim() || inviting}
-                className="h-10 px-4 rounded-xl gap-1.5"
+                className="h-11 gap-1.5 rounded-xl bg-brand px-4 text-bg-base shadow-lg shadow-brand/25 hover:opacity-90"
               >
                 {inviting ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -143,20 +146,21 @@ export function ShareDialog({
 
           {error && <p className="text-xs text-state-error">{error}</p>}
 
-          <div className="flex flex-col gap-1">
+          <div className="rounded-2xl border border-border-default/70 bg-bg-base/70 p-2 shadow-inner shadow-black/20">
+            <div className="flex flex-col gap-1">
             {loadingCollabs ? (
               <div className="flex items-center justify-center py-4">
-                <Loader2 className="h-4 w-4 animate-spin text-text-muted" />
+                <Loader2 className="h-4 w-4 animate-spin text-copy-muted" />
               </div>
             ) : collaborators.length === 0 ? (
-              <p className="text-sm text-text-muted py-2">No collaborators yet.</p>
+              <p className="py-2 text-sm text-copy-muted">No collaborators yet.</p>
             ) : (
               collaborators.map((c) => (
                 <div
                   key={c.email}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2 hover:bg-bg-subtle transition-colors"
+                  className="flex items-center gap-3 rounded-xl border border-transparent px-3 py-2 transition-colors hover:border-border-default/60 hover:bg-subtle"
                 >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-bg-elevated border border-border-default overflow-hidden">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border-default bg-elevated">
                     {c.avatar ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -165,18 +169,18 @@ export function ShareDialog({
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <span className="text-xs font-medium text-text-muted">
+                      <span className="text-xs font-medium text-copy-muted">
                         {(c.name ?? c.email).charAt(0).toUpperCase()}
                       </span>
                     )}
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="min-w-0 flex-1">
                     {c.name && (
-                      <p className="text-sm text-text-primary truncate">{c.name}</p>
+                      <p className="truncate text-sm text-copy-primary">{c.name}</p>
                     )}
                     <p
                       className={`text-xs truncate ${
-                        c.name ? "text-text-muted" : "text-text-secondary"
+                        c.name ? "text-copy-muted" : "text-copy-secondary"
                       }`}
                     >
                       {c.email}
@@ -188,7 +192,7 @@ export function ShareDialog({
                       size="icon-sm"
                       onClick={() => void handleRemove(c.email)}
                       disabled={removingEmail === c.email}
-                      className="shrink-0 text-text-muted hover:text-state-error"
+                      className="shrink-0 text-copy-muted hover:bg-state-error/10 hover:text-state-error"
                     >
                       {removingEmail === c.email ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -201,14 +205,15 @@ export function ShareDialog({
                 </div>
               ))
             )}
+            </div>
           </div>
 
-          <div className="border-t border-border-default pt-3">
+          <div className="border-t border-border-default/80 pt-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={handleCopyLink}
-              className="w-full gap-2 h-9 rounded-xl text-text-secondary hover:text-text-primary"
+              className="h-10 w-full gap-2 rounded-xl border border-border-default/70 bg-elevated text-copy-secondary shadow-sm hover:bg-subtle hover:text-copy-primary"
             >
               {copied ? (
                 <Check className="h-4 w-4 text-state-success" />

@@ -81,7 +81,7 @@ export function WorkspaceShell({
         activeProjectId={projectId}
       />
 
-      <main className="h-full pt-12 bg-bg-base">
+      <main className="h-full bg-bg-base pt-14">
         <CanvasRoom
           roomId={projectId}
           isAiOpen={isAiOpen}

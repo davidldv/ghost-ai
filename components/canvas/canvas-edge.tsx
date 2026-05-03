@@ -11,8 +11,8 @@ import {
 } from "@xyflow/react"
 import { CanvasEdgeData, CANVAS_EDGE_TYPE } from "@/types/canvas"
 
-const EDGE_COLOR = "#f8fafc"
-const EDGE_HOVER_COLOR = "#ffffff"
+const EDGE_COLOR = "#52525b"
+const EDGE_HOVER_COLOR = "#a1a1aa"
 
 interface CanvasEdgeProps {
   id: string

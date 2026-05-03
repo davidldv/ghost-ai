@@ -32,6 +32,7 @@ import {
   DEFAULT_EDGE_COLOR,
   DEFAULT_NODE_COLOR,
   SHAPE_DRAG_MIME,
+  SHAPE_DEFAULT_SIZES,
   NODE_COLORS,
   type CanvasNode as CanvasNodeT,
   type CanvasEdge as CanvasEdgeT,
@@ -51,8 +52,8 @@ const edgeTypes: EdgeTypes = {
 const defaultEdgeOptions = {
   type: CANVAS_EDGE_TYPE,
   data: { label: undefined },
-  style: { stroke: DEFAULT_EDGE_COLOR, strokeWidth: 1.5 },
-  markerEnd: { type: MarkerType.ArrowClosed, color: DEFAULT_EDGE_COLOR },
+  style: { stroke: DEFAULT_EDGE_COLOR, strokeWidth: 1.25 },
+  markerEnd: { type: MarkerType.ArrowClosed, color: DEFAULT_EDGE_COLOR, width: 14, height: 14 },
 }
 
 let nodeCounter = 0
@@ -237,13 +238,19 @@ function CanvasInner({ projectId }: { projectId: string }) {
         type: "remove" as const,
         id: n.id,
       }))
-      const addNodeChanges: NodeChange<CanvasNodeT>[] = templateNodes.map((n) => ({
-        type: "add" as const,
-        item: {
-          ...n,
-          type: CANVAS_NODE_TYPE,
-        } as CanvasNodeT,
-      }))
+      const addNodeChanges: NodeChange<CanvasNodeT>[] = templateNodes.map((n) => {
+        const shape = (n.data as CanvasNodeData).shape
+        const size = SHAPE_DEFAULT_SIZES[shape] ?? { width: 180, height: 90 }
+        return {
+          type: "add" as const,
+          item: {
+            ...n,
+            type: CANVAS_NODE_TYPE,
+            width: n.width ?? size.width,
+            height: n.height ?? size.height,
+          } as CanvasNodeT,
+        }
+      })
 
       const removeEdgeChanges = edges.map((e) => ({
         type: "remove" as const,
@@ -273,12 +280,23 @@ function CanvasInner({ projectId }: { projectId: string }) {
 
   return (
     <div
-      className="relative h-full w-full"
+      className="relative h-full w-full overflow-hidden"
       onDragOver={onDragOver}
       onDrop={onDrop}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
+      style={{
+        background:
+          "radial-gradient(ellipse 80% 60% at 50% 30%, #15151b 0%, #0c0c10 55%, #07070a 100%)",
+      }}
     >
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(circle at 20% 15%, rgba(82,168,255,0.06), transparent 45%), radial-gradient(circle at 80% 85%, rgba(191,122,240,0.05), transparent 50%)",
+        }}
+      />
       <LiveCursors />
       <PresenceAvatars />
       <ReactFlow<CanvasNodeT, Edge>
@@ -295,12 +313,22 @@ function CanvasInner({ projectId }: { projectId: string }) {
         fitView
         proOptions={{ hideAttribution: true }}
         colorMode="dark"
+        style={{ background: "transparent" }}
       >
         <Background
+          id="grid-dots"
           variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1}
-          color="#2a2a30"
+          gap={28}
+          size={1.2}
+          color="#2d2d36"
+        />
+        <Background
+          id="grid-cross"
+          variant={BackgroundVariant.Cross}
+          gap={140}
+          size={6}
+          color="#3a3a44"
+          style={{ opacity: 0.35 }}
         />
       </ReactFlow>
       <CanvasControls

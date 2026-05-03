@@ -34,7 +34,8 @@ export function RenameProjectDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[460px] border-border-default/80 bg-bg-surface/95">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-brand/10 to-transparent" />
         <DialogHeader>
           <DialogTitle>Rename project</DialogTitle>
           <DialogDescription>
@@ -43,7 +44,7 @@ export function RenameProjectDialog({
         </DialogHeader>
 
         <form
-          className="flex flex-col gap-4 mt-2"
+          className="mt-2 flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault()
             if (canSubmit) onSubmit()
@@ -53,13 +54,13 @@ export function RenameProjectDialog({
             autoFocus
             value={name}
             onChange={(e) => onNameChange(e.target.value)}
-            className="h-12 bg-base border border-border-default focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand text-copy-primary placeholder:text-faint rounded-xl px-4"
+            className="h-12 rounded-xl border border-border-default bg-base px-4 text-copy-primary placeholder:text-faint focus-visible:border-brand focus-visible:ring-1 focus-visible:ring-brand"
           />
           <DialogFooter className="mt-2">
             <Button
               type="button"
               variant="ghost"
-              className="rounded-xl h-11 px-6 font-medium text-copy-primary hover:bg-subtle"
+              className="h-11 rounded-xl border border-transparent px-6 font-medium text-copy-primary hover:border-border-default/70 hover:bg-subtle"
               onClick={() => onOpenChange(false)}
               disabled={loading}
             >
@@ -68,7 +69,7 @@ export function RenameProjectDialog({
             <Button 
               type="submit" 
               disabled={!canSubmit}
-              className="rounded-xl h-11 px-6 font-medium border-0 shadow-none bg-brand text-base hover:opacity-90 transition-opacity"
+              className="h-11 rounded-xl bg-brand px-6 font-medium text-bg-base shadow-lg shadow-brand/25 transition-opacity hover:opacity-90"
             >
               {loading ? "Saving…" : "Save"}
             </Button>

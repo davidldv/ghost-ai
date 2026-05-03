@@ -27,7 +27,8 @@ export function DeleteProjectDialog({
 }: DeleteProjectDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-[460px] border-border-default/80 bg-bg-surface/95">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-state-error/20 to-transparent" />
         <DialogHeader>
           <DialogTitle>Delete project</DialogTitle>
           <DialogDescription>
@@ -39,7 +40,7 @@ export function DeleteProjectDialog({
           <Button
             type="button"
             variant="ghost"
-            className="rounded-xl h-11 px-6 font-medium text-copy-primary hover:bg-subtle"
+            className="h-11 rounded-xl border border-transparent px-6 font-medium text-copy-primary hover:border-border-default/70 hover:bg-subtle"
             onClick={() => onOpenChange(false)}
             disabled={loading}
           >
@@ -48,7 +49,7 @@ export function DeleteProjectDialog({
           <Button
             type="button"
             variant="destructive"
-            className="rounded-xl h-11 px-6 font-medium bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/10 shadow-none transition-colors"
+            className="h-11 rounded-xl border border-state-error/30 bg-state-error/10 px-6 font-medium text-state-error transition-colors hover:bg-state-error/20"
             onClick={onConfirm}
             disabled={loading}
           >

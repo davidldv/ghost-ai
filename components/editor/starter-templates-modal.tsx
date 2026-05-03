@@ -167,17 +167,18 @@ export const StarterTemplatesModal = memo(function StarterTemplatesModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-bg-base/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-bg-base/85 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative z-10 flex max-h-[80vh] w-full max-w-3xl flex-col rounded-3xl border border-border-default bg-bg-surface p-6 shadow-2xl">
+      <div className="relative z-10 flex max-h-[84vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border-default/80 bg-bg-surface/95 p-6 shadow-2xl backdrop-blur-xl">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand/10 to-transparent" />
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-text-primary">Starter Templates</h2>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-text-muted transition-colors hover:bg-bg-subtle hover:text-text-primary"
+            className="flex h-8 w-8 items-center justify-center rounded-xl border border-transparent text-text-muted transition-all hover:border-border-default/70 hover:bg-bg-subtle hover:text-text-primary"
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 cursor-pointer" />
           </button>
         </div>
 
@@ -189,9 +190,9 @@ export const StarterTemplatesModal = memo(function StarterTemplatesModal({
           {CANVAS_TEMPLATES.map((template) => (
             <div
               key={template.id}
-              className="group flex flex-col rounded-2xl border border-border-default bg-bg-elevated p-3 transition-colors hover:border-border-subtle"
+              className="group flex flex-col rounded-2xl border border-border-default/70 bg-bg-elevated/70 p-3 transition-all hover:border-border-subtle hover:shadow-lg"
             >
-              <div className="mb-2 rounded-xl bg-bg-subtle p-2">
+              <div className="mb-2 rounded-xl border border-border-default/50 bg-bg-subtle p-2">
                 <TemplatePreview nodes={template.nodes} edges={template.edges} />
               </div>
               <h3 className="mb-1 font-medium text-text-primary">{template.name}</h3>
@@ -201,7 +202,7 @@ export const StarterTemplatesModal = memo(function StarterTemplatesModal({
                   onImport(template)
                   onClose()
                 }}
-                className="w-full rounded-xl bg-accent-primary py-2 text-sm font-medium text-bg-base transition-opacity hover:opacity-90"
+                className="w-full rounded-xl bg-brand py-2 text-sm font-medium text-bg-base transition-opacity hover:opacity-90 cursor-pointer"
               >
                 Import
               </button>

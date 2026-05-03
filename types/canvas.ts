@@ -26,18 +26,18 @@ export interface NodeColor {
 }
 
 export const NODE_COLORS: Record<string, NodeColor> = {
-  neutral: { fill: "#1F1F1F", text: "#EDEDED" },
-  blue: { fill: "#10233D", text: "#52A8FF" },
-  purple: { fill: "#2E1938", text: "#BF7AF0" },
-  orange: { fill: "#331B00", text: "#FF990A" },
-  red: { fill: "#3C1618", text: "#FF6166" },
-  pink: { fill: "#3A1726", text: "#F75F8F" },
-  green: { fill: "#0F2E18", text: "#62C073" },
-  teal: { fill: "#062822", text: "#0AC7B4" },
+  neutral: { fill: "#1C1C20", text: "#EDEDED" },
+  blue: { fill: "#0E2C50", text: "#6BB6FF" },
+  purple: { fill: "#3A1F4A", text: "#CB8DFF" },
+  orange: { fill: "#4A2700", text: "#FFAA33" },
+  red: { fill: "#4D1B20", text: "#FF7A80" },
+  pink: { fill: "#4A1D32", text: "#FF7AA3" },
+  green: { fill: "#143E22", text: "#7BD68C" },
+  teal: { fill: "#0A382F", text: "#2BD7C2" },
 }
 
 export const DEFAULT_NODE_COLOR = "neutral"
-export const DEFAULT_EDGE_COLOR = "#f8fafc"
+export const DEFAULT_EDGE_COLOR = "#52525b"
 
 export interface CanvasNodeData extends Record<string, unknown> {
   label: string

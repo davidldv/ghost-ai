@@ -65,9 +65,10 @@ export function AuthForm({ mode, callbackUrl = "/editor" }: AuthFormProps) {
       : { label: "Already have an account?", href: "/sign-in", action: "Sign in" }
 
   return (
-    <div className="flex flex-col gap-6 p-8 sm:p-10 rounded-[2rem] bg-surface border border-border-default shadow-2xl shadow-black/40">
+    <div className="relative flex flex-col gap-6 overflow-hidden rounded-[2rem] border border-border-default/80 bg-surface/90 p-8 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-10">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-brand/10 to-transparent" />
       <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-copy-primary">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-copy-primary sm:text-3xl">{title}</h1>
         <p className="text-sm text-copy-secondary">{subtitle}</p>
       </div>
 
@@ -75,21 +76,21 @@ export function AuthForm({ mode, callbackUrl = "/editor" }: AuthFormProps) {
         <Button
             type="button"
             variant="outline"
-            className="w-full h-11 bg-elevated border-border-subtle hover:bg-subtle hover:border-border-default text-copy-primary transition-all font-medium rounded-xl"
+            className="h-11 w-full rounded-xl border-border-subtle bg-elevated font-medium text-copy-primary transition-all hover:border-border-default hover:bg-subtle"
             disabled={pending !== null}
             onClick={() => oauth("google")}
         >
-            {pending === "google" ? <Loader2 className="mr-3 h-4.5 w-4.5 animate-spin text-copy-muted" /> : <GoogleIcon className="mr-3 h-4.5 w-4.5" />}
+            {pending === "google" ? <Loader2 className="mr-3 h-4 w-4 animate-spin text-copy-muted" /> : <GoogleIcon className="mr-3 h-4 w-4" />}
             Continue with Google
         </Button>
         <Button
             type="button"
             variant="outline"
-            className="w-full h-11 bg-elevated border-border-subtle hover:bg-subtle hover:border-border-default text-copy-primary transition-all font-medium rounded-xl"
+            className="h-11 w-full rounded-xl border-border-subtle bg-elevated font-medium text-copy-primary transition-all hover:border-border-default hover:bg-subtle"
             disabled={pending !== null}
             onClick={() => oauth("github")}
         >
-            {pending === "github" ? <Loader2 className="mr-3 h-4.5 w-4.5 animate-spin text-copy-muted" /> : <GithubIcon className="mr-3 h-4.5 w-4.5" />}
+            {pending === "github" ? <Loader2 className="mr-3 h-4 w-4 animate-spin text-copy-muted" /> : <GithubIcon className="mr-3 h-4 w-4" />}
             Continue with GitHub
         </Button>
       </div>
@@ -112,12 +113,12 @@ export function AuthForm({ mode, callbackUrl = "/editor" }: AuthFormProps) {
             placeholder="name@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-11 px-4 bg-base border-border-subtle hover:border-border-default focus:border-brand text-copy-primary placeholder:text-faint rounded-xl transition-colors"
+            className="h-11 rounded-xl border-border-subtle bg-base px-4 text-copy-primary placeholder:text-faint transition-colors hover:border-border-default focus:border-brand"
             />
         </div>
         <Button
           type="submit"
-          className="w-full h-11 bg-brand text-base hover:opacity-90 font-semibold rounded-xl shadow-[0_0_20px_rgba(0,200,212,0.15)] transition-all flex items-center justify-center group"
+          className="group flex h-11 w-full items-center justify-center rounded-xl bg-brand text-base font-semibold shadow-lg shadow-brand/25 transition-all hover:opacity-90"
           disabled={pending !== null || email.length === 0}
         >
           {pending === "email" ? (
@@ -131,7 +132,7 @@ export function AuthForm({ mode, callbackUrl = "/editor" }: AuthFormProps) {
         </Button>
       </form>
 
-      <p className="text-[13px] text-copy-muted text-center bg-base/40 border border-border-subtle/50 py-3.5 px-4 rounded-xl mt-2">
+       <p className="mt-2 rounded-xl border border-border-subtle/50 bg-base/40 px-4 py-3.5 text-center text-[13px] text-copy-muted">
         {swap.label}{" "}
         <a href={swap.href} className="text-copy-primary hover:text-brand font-medium transition-colors">
           {swap.action}
