@@ -6,10 +6,15 @@ import {
   RoomProvider,
   ClientSideSuspense,
 } from "@liveblocks/react/suspense"
+import { LiveObject, LiveList } from "@liveblocks/client"
 import { Canvas } from "./canvas"
+import { AISidebar } from "@/components/editor/ai-sidebar"
 
 interface CanvasRoomProps {
   roomId: string
+  isAiOpen: boolean
+  onAiClose: () => void
+  projectId: string
 }
 
 interface ErrorBoundaryProps {
@@ -55,16 +60,28 @@ function CanvasLoading() {
   )
 }
 
-export function CanvasRoom({ roomId }: CanvasRoomProps) {
+export function CanvasRoom({ roomId, isAiOpen, onAiClose, projectId }: CanvasRoomProps) {
   return (
     <LiveblocksErrorBoundary>
       <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
         <RoomProvider
           id={roomId}
-          initialPresence={{ cursor: null, isThinking: false }}
+          initialPresence={{ cursor: null, thinking: false }}
+          initialStorage={
+            new LiveObject({
+              aiStatusFeed: null,
+              aiChat: new LiveList([]),
+            }) as any
+          }
         >
           <ClientSideSuspense fallback={<CanvasLoading />}>
-            <Canvas />
+            <Canvas projectId={roomId} />
+            <AISidebar
+              open={isAiOpen}
+              onClose={onAiClose}
+              projectId={projectId}
+              roomId={roomId}
+            />
           </ClientSideSuspense>
         </RoomProvider>
       </LiveblocksProvider>

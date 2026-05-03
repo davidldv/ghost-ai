@@ -91,23 +91,23 @@
     --sidebar-ring: oklch(0.556 0 0);
 
     /* project design tokens */
-    --bg-base: #080809;
-    --bg-surface: #111114;
-    --bg-elevated: #18181c;
-    --bg-subtle: #1e1e23;
-    --border-default: #2a2a30;
-    --border-subtle: #3a3a42;
-    --text-primary: #f0f0f4;
-    --text-secondary: #c0c0cc;
-    --text-muted: #808090;
-    --text-faint: #505060;
-    --accent-primary: #00c8d4;
-    --accent-primary-dim: rgba(0, 200, 212, 0.12);
-    --accent-ai: #6457f9;
-    --accent-ai-text: #8b82ff;
-    --state-error: #ff4d4f;
-    --state-success: #34d399;
-    --state-warning: #fbbf24;
+    --bg-base: #0f1115;
+    --bg-surface: #1a1c23;
+    --bg-elevated: #242730;
+    --bg-subtle: #2d313c;
+    --border-default: #383e4a;
+    --border-subtle: #4b5263;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+    --accent-primary: #3b82f6;
+    --accent-primary-dim: rgba(59, 130, 246, 0.15);
+    --accent-ai: #8b5cf6;
+    --accent-ai-text: #a78bfa;
+    --state-error: #ef4444;
+    --state-success: #10b981;
+    --state-warning: #f59e0b;
 }
 
 @layer base {

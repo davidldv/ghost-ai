@@ -14,6 +14,7 @@ import {
   NODE_MIN_HEIGHT,
   NODE_MIN_WIDTH,
 } from "@/types/canvas"
+import { NodeColorToolbar } from "./node-color-toolbar"
 
 const HANDLE_POSITIONS: { id: string; type: "source" | "target"; position: Position }[] = [
   { id: "top", type: "source", position: Position.Top },
@@ -23,10 +24,21 @@ const HANDLE_POSITIONS: { id: string; type: "source" | "target"; position: Posit
 ]
 
 function CanvasNodeImpl({ id, data, selected, width, height }: NodeProps<CanvasNodeType>) {
-  const { updateNodeData } = useReactFlow()
+  const { updateNodeData, deleteElements } = useReactFlow()
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(data.label)
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+
+  const handleColorChange = useCallback(
+    (color: string) => {
+      updateNodeData(id, { color })
+    },
+    [id, updateNodeData]
+  )
+
+  const handleDelete = useCallback(() => {
+    deleteElements({ nodes: [{ id }] })
+  }, [id, deleteElements])
 
   useEffect(() => {
     if (!editing) setDraft(data.label)
@@ -76,6 +88,9 @@ function CanvasNodeImpl({ id, data, selected, width, height }: NodeProps<CanvasN
         startEdit()
       }}
     >
+      {selected && (
+        <NodeColorToolbar currentColor={data.color} onColorChange={handleColorChange} onDelete={handleDelete} />
+      )}
       <NodeResizer
         isVisible={selected}
         minWidth={NODE_MIN_WIDTH}

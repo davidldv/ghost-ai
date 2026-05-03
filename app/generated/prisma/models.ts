@@ -10,6 +10,8 @@
  */
 export type * from './models/Project'
 export type * from './models/ProjectCollaborator'
+export type * from './models/ProjectSpec'
+export type * from './models/TaskRun'
 export type * from './models/User'
 export type * from './models/Account'
 export type * from './models/Session'

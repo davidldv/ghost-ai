@@ -53,6 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Project: 'Project',
   ProjectCollaborator: 'ProjectCollaborator',
+  ProjectSpec: 'ProjectSpec',
+  TaskRun: 'TaskRun',
   User: 'User',
   Account: 'Account',
   Session: 'Session',
@@ -81,7 +83,7 @@ export const ProjectScalarFieldEnum = {
   name: 'name',
   description: 'description',
   status: 'status',
-  canvasJsonPath: 'canvasJsonPath',
+  canvasBlobUrl: 'canvasBlobUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -97,6 +99,27 @@ export const ProjectCollaboratorScalarFieldEnum = {
 } as const
 
 export type ProjectCollaboratorScalarFieldEnum = (typeof ProjectCollaboratorScalarFieldEnum)[keyof typeof ProjectCollaboratorScalarFieldEnum]
+
+
+export const ProjectSpecScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  filePath: 'filePath',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectSpecScalarFieldEnum = (typeof ProjectSpecScalarFieldEnum)[keyof typeof ProjectSpecScalarFieldEnum]
+
+
+export const TaskRunScalarFieldEnum = {
+  id: 'id',
+  runId: 'runId',
+  projectId: 'projectId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type TaskRunScalarFieldEnum = (typeof TaskRunScalarFieldEnum)[keyof typeof TaskRunScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

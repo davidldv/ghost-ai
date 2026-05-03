@@ -1,7 +1,10 @@
 "use client"
 
-import { PanelLeftClose, PanelLeftOpen, Share2, Bot } from "lucide-react"
+import { useEffect, useState } from "react"
+import { PanelLeftClose, PanelLeftOpen, Share2, Bot, LayoutTemplate, Save, Check, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+type SaveStatus = "idle" | "saving" | "saved" | "error"
 
 interface EditorNavbarProps {
   isSidebarOpen: boolean
@@ -10,6 +13,8 @@ interface EditorNavbarProps {
   onShare?: () => void
   onAiToggle?: () => void
   isAiOpen?: boolean
+  onTemplates?: () => void
+  saveStatus?: SaveStatus
 }
 
 export function EditorNavbar({
@@ -19,7 +24,38 @@ export function EditorNavbar({
   onShare,
   onAiToggle,
   isAiOpen,
+  onTemplates,
+  saveStatus: propSaveStatus,
 }: EditorNavbarProps) {
+  const [status, setStatus] = useState<SaveStatus>(propSaveStatus ?? "idle")
+
+  useEffect(() => {
+    if (propSaveStatus) {
+      setStatus(propSaveStatus)
+    }
+  }, [propSaveStatus])
+
+  useEffect(() => {
+    const handleStatus = (e: CustomEvent<SaveStatus>) => {
+      setStatus(e.detail)
+    }
+    window.addEventListener("canvas-save-status", handleStatus as EventListener)
+    return () => {
+      window.removeEventListener("canvas-save-status", handleStatus as EventListener)
+    }
+  }, [])
+
+  const statusIcon = status === "saving" ? (
+    <Loader2 className="h-4 w-4 animate-spin" />
+  ) : status === "saved" ? (
+    <Check className="h-4 w-4" />
+  ) : status === "error" ? (
+    <span className="text-state-error">!</span>
+  ) : (
+    <Save className="h-4 w-4" />
+  )
+
+  const statusText = status === "saving" ? "Saving" : status === "saved" ? "Saved" : status === "error" ? "Error" : "Save"
   return (
     <header className="fixed top-0 left-0 right-0 z-40 h-12 flex items-center px-3 bg-bg-surface border-b border-border-default">
       <div className="flex items-center">
@@ -45,6 +81,34 @@ export function EditorNavbar({
       <div className="flex-1" />
 
       <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={`gap-1.5 h-8 px-3 rounded-xl ${
+            status === "saved"
+              ? "text-state-success"
+              : status === "error"
+              ? "text-state-error"
+              : status === "saving"
+              ? "text-text-muted"
+              : "text-text-secondary hover:text-text-primary"
+          }`}
+        >
+          {statusIcon}
+          <span className="text-xs">{statusText}</span>
+        </Button>
+
+        {onTemplates && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onTemplates}
+            className="gap-1.5 h-8 px-3 text-text-secondary hover:text-text-primary rounded-xl"
+          >
+            <LayoutTemplate className="h-4 w-4" />
+            Templates
+          </Button>
+        )}
         {onShare && (
           <Button
             variant="ghost"
